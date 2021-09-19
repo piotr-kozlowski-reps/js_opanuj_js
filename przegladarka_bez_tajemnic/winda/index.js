@@ -32,14 +32,47 @@ const directions = {
 
 document.addEventListener('DOMContentLoaded', () => {
   
+  // debugger;
   const directorSignSelector = document.querySelector('.direction');
   const elevatorSelector = document.querySelector('div.elevator');
+  let scrollYPrevious = 0;
+  const innerTextUp = `Kierunek: ${directions.top}`;
+  const innerTextDown = `Kierunek: ${directions.bottom}`;
   
   elevatorSelector.addEventListener('scroll', (event) => {
-    const scrolled = elevatorSelector.scrollY;
     
-    console.log(event);
-    console.log(scrolled);
+    const floorsNumber = 10;
+    const currentScroll_y = elevatorSelector.scrollTop;
+    const maxScroll_y = 1470; // it shouldn't be hardcoded - ask how to obtain that value via JS
+    const whichFloor = calculateFloor(maxScroll_y, currentScroll_y, floorsNumber);
+
+
+    if (currentScroll_y > scrollYPrevious) directorSignSelector.innerText = `${innerTextDown}  we're on floor: ${whichFloor}`;
+    else directorSignSelector.innerText = `${innerTextUp}  we're on floor: ${whichFloor}`;
+
+    scrollYPrevious = currentScroll_y;
+
+    console.log(currentScroll_y);
+
+
   })
+
+  function calculateFloor(maxScroll_y, currentScroll_y, floorsNumber){
+
+    // debugger;
+    let resultWhichFloor = 0;
+
+    const numberOfPixelsForOneFloor = Math.ceil(maxScroll_y / floorsNumber);
+    for (let i = 0; i <= floorsNumber; i++){
+      const minPixels = numberOfPixelsForOneFloor * i;
+      const maxPixels = numberOfPixelsForOneFloor * (i + 1);
+
+      if(currentScroll_y >= minPixels && currentScroll_y < maxPixels) {
+        resultWhichFloor = floorsNumber - i;
+        break;
+      }
+    }
+    return resultWhichFloor;
+  }
 
 })
