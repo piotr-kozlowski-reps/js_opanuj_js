@@ -1,0 +1,135 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Raleway', sans-serif;
+    line-height: 1.4;
+}
+
+p{
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #eee;
+}
+
+#form{
+    width: 300px;
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 0 0 10px #ccc;
+    border-radius: 3px;
+}
+
+#form input{
+    width: 100%;
+    padding: .25rem;
+    border: 1px solid #eee;
+    border-radius: 2px;
+    margin-bottom: 1rem;
+}
+
+#form input:focus{
+    border: 1px solid #eee;
+}
+
+#form button{
+    border: 1px solid #ddd;
+    padding: .25rem;
+    border-radius: 5px;
+    width: 100%;
+    font-weight: bold;
+    color: #333;
+}
+
+#form button:hover{
+    background: #ccc;
+    color: #fff;
+}
+
+#calendar{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 1rem;
+    box-shadow: 0 0 10px #ccc;
+    border-radius: 3px;
+}
+
+#calendar .calendar-title{
+    margin-left: 30px;
+}
+
+#calendar .nawyk_title{
+    font-size: 1rem;
+}
+
+#calendar .border{
+    border-bottom: 2px solid #333;
+    width: 40%;
+    padding: .1rem 0;
+}
+
+#calendar .calendar-tabs{
+    margin-top: .75rem;
+    display: flex;
+}
+
+#calendar .calendar-tabs .month{
+    width: 100%;
+    background: green;
+}
+
+#previous,
+#next {
+    width: 30px;
+}
+
+#month2{
+    margin: 0 1.25rem;
+}
+
+.month-name{
+    padding: 0.5rem;
+    background: #666;
+    color: #fff;
+    height: 45px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.month-name .month-title{
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.month-name .month-numbers{
+    font-weight: 700;
+    font-size: 0.75rem;
+
+}
+
+
+
+    
+    
+
+
+
+
+.hidden{
+    display: none;
+}
