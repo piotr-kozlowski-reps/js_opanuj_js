@@ -75,7 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   //utils
-
   function changeColumnsIfNeeded(event){
 
     const windowWidth = event.currentTarget.innerWidth;
@@ -126,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //vars
     let html = '';
     const numberOfDaysWithInfo = 0; //TODO: count the number finaly
-    const numberOfDaysInGivenMonth = specifyNumberOfDaysInMonth(month, year);
+    const numberOfDaysInGivenMonth = specifyNumberOfDaysInMonth(month + 1, year);
     
     
     //first element-> month title
