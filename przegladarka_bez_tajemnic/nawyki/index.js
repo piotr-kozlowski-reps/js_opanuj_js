@@ -120,45 +120,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createColumn(year, month, selector){
 
+    selector.innerHTML = '';
     selector.classList.remove('hidden');
 
+
     //vars
-    let html = '';
     const numberOfDaysWithInfo = 0; //TODO: count the number finaly
     const numberOfDaysInGivenMonth = specifyNumberOfDaysInMonth(month + 1, year);
     
-    
+
     //first element-> month title
-    html += `<div class="month-name">`;
-    html += `<div class="month-title">${monthOfYear[month]} '${year}</div>`;
-    html += `<div class="month-numbers">${numberOfDaysWithInfo}/${numberOfDaysInGivenMonth}</div>`;
-    html += `</div>`;
+    const monthBrick = document.createElement('month-brick');
+    monthBrick.setAttribute('monthName', monthOfYear[month]);
+    monthBrick.setAttribute('year', year);
+    monthBrick.setAttribute('numberOfDaysWithInfo', numberOfDaysWithInfo);
+    monthBrick.setAttribute('numberOfDaysInGivenMonth', numberOfDaysInGivenMonth);
+    selector.appendChild(monthBrick);
 
 
-    //all days elements
+    //all the elements for days
+    //container
+    const allDaysContainer = document.createElement('div');
+    allDaysContainer.classList.add('all-days');
+    selector.appendChild(allDaysContainer);
 
-    html += `<div class="all-days">`;
-
+    //days
     for(let i = 1; i <= numberOfDaysInGivenMonth; i++){
 
       const currentDay = new Date(year, month, i).getDay();
       const idOfCurrentDay = `${year}-${month}-${i}`;
 
-      html += `<div class="day-every">`
-      html += `<div class="day-info">`
-      html += `${i} <span class="day-name">${dayOfWeek[currentDay]}</span>`
-      html += `</div>`
-      html += `<div class="day-nawyki" id="${idOfCurrentDay}"></div>`
-      html += `</div>`
-
-      allIdsForListeners.push(`${idOfCurrentDay}`);
-
+      const dayBrick = document.createElement('day-brick');
+      dayBrick.setAttribute('year', year);
+      dayBrick.setAttribute('month', month);
+      dayBrick.setAttribute('day', i);
+      dayBrick.setAttribute('dayOfWeek', dayOfWeek[currentDay]);
+      allDaysContainer.appendChild(dayBrick);
     }
-
-    html += `</div>`;
-
-    //finally
-    selector.innerHTML = html;
   }
 
   function _elem(el) {

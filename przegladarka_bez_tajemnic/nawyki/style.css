@@ -184,7 +184,8 @@ p{
 }
 
 .month-name .month-numbers{
-    padding-top: 9%;
+    /* padding-top: 9%; */
+    margin-top: 20px;
     font-weight: 700;
     font-size: 0.75rem;
 
