@@ -7,6 +7,7 @@
 body{
     font-family: 'Raleway', sans-serif;
     line-height: 1.4;
+    background: #eee;
 }
 
 p{
@@ -22,6 +23,13 @@ p{
     padding: 2rem;
     background: #eee;
 }
+
+
+
+
+
+
+/* form */
 
 #form{
     width: 300px;
@@ -57,8 +65,17 @@ p{
     color: #fff;
 }
 
+
+
+
+
+
+/* calendar */
+
 #calendar{
     width: 100%;
+    height: 700px;
+
     display: flex;
     flex-direction: column;
     background: #fff;
@@ -68,11 +85,44 @@ p{
 }
 
 #calendar .calendar-title{
-    margin-left: 30px;
+    margin-left: 34px;
+    display: flex;
+    flex-direction: column;
+}
+
+#calendar .calendar-title .calendar-title-container{
+    display: flex;
+}
+
+#calendar .calendar-title .close{
+    margin-top: .75rem;
+    margin-left: 1rem;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
 }
 
 #calendar .nawyk_title{
     font-size: 1rem;
+}
+
+#calendar .nawyk_title + i{
+    font-size: 1rem;
+    margin-left: .5rem;
+    color: #ccc;
+}
+
+#calendar .nawyk_title + i:hover{
+    font-size: 1rem;
+    margin-left: .5rem;
+    color: #333;
+}
+
+.all-days{
+    height: 560px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 #calendar .border{
@@ -86,9 +136,24 @@ p{
     display: flex;
 }
 
+#previous > i,
+#next> i{
+    font-size: 1.5rem;
+    text-align: center;
+    padding-right: .5rem;
+    padding-left: .3rem;
+    padding-top: .4rem;
+    color: #ccc;
+}
+
+#previous > i:hover,
+#next > i:hover{
+    color: #333;
+}
+
 #calendar .calendar-tabs .month{
     width: 100%;
-    background: green;
+    margin: 0 .25rem;
 }
 
 #previous,
@@ -106,22 +171,70 @@ p{
     color: #fff;
     height: 45px;
     margin-bottom: 10px;
+    /* margin-right: 10px; */
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.month-name .month-title{
+.month-name .month-title,
+.day-info{
     font-weight: 500;
     font-size: 1.1rem;
 }
 
 .month-name .month-numbers{
+    padding-top: 9%;
     font-weight: 700;
     font-size: 0.75rem;
 
 }
 
+.day-every{
+    padding: 0.5rem;
+    background: #eee;
+    color: #333;
+    height: 45px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 6px;
+}
+
+.day-every .day-name{
+    padding-left: .25rem;
+    font-size: .9rem;
+    color: #666;
+}
+
+.day-every .day-nawyki{
+    background-color: #666;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+
+/*  custom scroll */
+::-webkit-scrollbar{
+    /* margin-right: 5px; */
+    width: 10px;
+    /* padding: 5px; */
+}
+
+::-webkit-scrollbar-track{
+    background: #eee;
+}
+
+::-webkit-scrollbar-thumb{
+    background: #ccc;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background: #666;
+}
+
 
 
     
@@ -130,6 +243,11 @@ p{
 
 
 
+/* hiddens */
 .hidden{
     display: none;
 }
+
+/* #calendar{
+    display: none;
+} */
