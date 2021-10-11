@@ -1,12 +1,6 @@
 class DayBrick extends HTMLElement{
 
   repository = new AppRepository();
-  nawykStates = {
-    ON: 'ON',
-    OFF: 'OFF',
-    EMPTY: 'EMPTY'
-  }
-
 
   static get observedAttributes(){
     return ['year', 'month', 'day', 'dayOfWeek'];
@@ -23,8 +17,30 @@ class DayBrick extends HTMLElement{
     let day = this.attributes[2].value;
     let dayOfWeek = this.attributes[3].value;
 
+    // debugger;
     const idOfCurrentDay = `${year}-${month}-${day}`;
-    const dayNawykProperClass = 'day-nawyki-neutral';
+    const currentDayNawykState = this.repository.getDayNawykState(idOfCurrentDay);
+
+    let dayNawykProperClass = '';
+    switch(currentDayNawykState){
+      
+      case null || undefined:
+        dayNawykProperClass = 'day-nawyki-neutral'
+        break;
+
+      case true:
+        dayNawykProperClass = 'day-nawyki-on';
+        break;
+
+      case false:
+        dayNawykProperClass = 'day-nawyki-off';
+        break;
+
+      default:
+          dayNawykProperClass = 'day-nawyki-neutral'
+    }
+
+
 
     this.innerHTML = `
       <div class="day-every">
@@ -38,32 +54,21 @@ class DayBrick extends HTMLElement{
     document.getElementById(idOfCurrentDay).addEventListener('click', () => {this.onChange(event)});
 
 
-
-
   }
 
 
   onChange(event){
-
-      console.log(event);
-  
       const id = event.target.id;
-      const nawykState = '' // TODO: wyciągnięcie z REPO nawykStatu
-      console.log(id);
-      console.log(this.nawykStates.ON);
-
-      const nawyk = {
-        id: id,
-        nawykState: this.nawykStates.ON
-      }
-
-      console.log(nawyk);
-  
-      this.repository.addNawykInfo(nawyk);
+      this.repository.changeNawykState(id);
   }
+
+
 
   attributeChangedCallback(attributes, oldValue, newValue){
   }
+
+
+
 
 
 

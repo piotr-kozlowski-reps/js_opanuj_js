@@ -1,11 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  //objects
-  // const repository = new AppRepository();
-  console.log(repository);
+  //-----------------------objects
+  const repository = new AppRepository();
 
 
-  //selectors
+  //-----------------------selectors
   const formSelector = document.forms[0];
   const formSectionSelector = _elem('#form');
   const modalOKSelector = _elem('#modal-ok');
@@ -25,24 +24,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  //vars
-  let nawykName = '';
+  //-----------------------vars
+  let nawykName = repository.getName();
   const startingDate = new Date();
   const dayOfWeek = ['nd', 'pon', 'wt', 'śr', 'czw', 'pt', 'sob'];
   const monthOfYear = ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'];
-  let allIdsForListeners = [];
   let globalColumnsAmount = 3;
 
 
 
-  //events
+  //-----------------------events
   formSelector.addEventListener('submit', event => {
 
     event.preventDefault();
     nawykName = event.target[0].value;
 
     if(nawykName !== '') {
-      repository.addName(nawykName);
+      repository.setName(nawykName);
       formSectionSelector.classList.add('hidden');
       calendarSelector.style.display = 'flex';
       nawykTitleSelector.textContent = repository.getName();
@@ -83,42 +81,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  //-----------------------logic
+  init();
 
 
 
-
-
-
-
-
-
-
-  //logic
-  refresh();
-
-
-
-
-
-  //utils
-  function changeColumnsIfNeeded(event){
-
-    const windowWidth = event.currentTarget.innerWidth;
-    let desiredColumnsAmount = 0;
-
-    if (windowWidth >= 850) desiredColumnsAmount = 3;
-    if (windowWidth < 850 && windowWidth >= 550) desiredColumnsAmount = 2;
-    if (windowWidth < 550) desiredColumnsAmount = 1;
-
-
-    // debugger;
-    if (desiredColumnsAmount !== globalColumnsAmount){
-      globalColumnsAmount = desiredColumnsAmount;
+  //-----------------------utils
+  setInterval(function() {
+    if(repository.isRepositoryStateChanged){
       refresh();
     }
+  }, 500);
+  
+  function init(){
 
+    if(nawykName === null || nawykName === ''){
+      refresh();
+      return;
+    } else{
+      formSectionSelector.classList.add('hidden');
+      calendarSelector.style.display = 'flex';
+      nawykTitleSelector.textContent = repository.getName();
+      refresh();
+    }
   }
 
+  //TODO: dopytać o to jak wywołać taką funkcję z innego pliku w sensowny sposób
   function refresh(){
 
     let dateForFirstColumn = new Date(startingDate);
@@ -137,9 +125,26 @@ document.addEventListener('DOMContentLoaded', () => {
           createColumn(dateForFirstColumn.getFullYear(), dateForFirstColumn.getMonth(), columnSelectors[i]);
         }
       }
-
-    createAllSelectors();
   }
+
+  function changeColumnsIfNeeded(event){
+
+    const windowWidth = event.currentTarget.innerWidth;
+    let desiredColumnsAmount = 0;
+
+    if (windowWidth >= 850) desiredColumnsAmount = 3;
+    if (windowWidth < 850 && windowWidth >= 550) desiredColumnsAmount = 2;
+    if (windowWidth < 550) desiredColumnsAmount = 1;
+
+
+    // debugger;
+    if (desiredColumnsAmount !== globalColumnsAmount){
+      globalColumnsAmount = desiredColumnsAmount;
+      refresh();
+    }
+
+  }
+
 
   function createColumn(year, month, selector){
 
@@ -148,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     //vars
-    const numberOfDaysWithInfo = 0; //TODO: count the number finaly
+    const numberOfDaysWithInfo = repository.countNumberOfFilledDaysInGvenDate(year, month);
     const numberOfDaysInGivenMonth = specifyNumberOfDaysInMonth(month + 1, year);
     
 
@@ -188,12 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function specifyNumberOfDaysInMonth(month, year){
     return new Date(year, month, 0).getDate();
-  }
-
-  function createAllSelectors(){
-    allIdsForListeners.forEach(id => {
-      document.getElementById(id).addEventListener('click', handleDaysNawykiSelectors);
-    })
   }
 
   function handleDaysNawykiSelectors(event) {
@@ -236,5 +235,6 @@ document.addEventListener('DOMContentLoaded', () => {
     body.removeChild(overlay);
 
   }
+
 
 })
