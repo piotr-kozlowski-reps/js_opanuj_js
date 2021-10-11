@@ -13,4 +13,9 @@ class AppStorage{
         return JSON.parse(retrievedData);
     }
 
+    // getAll(){
+    //     const retrievedData = this.storage.getItem('NAWYKREPO');
+    //     return JSON.parse(retrievedData);
+    // }
+
 }

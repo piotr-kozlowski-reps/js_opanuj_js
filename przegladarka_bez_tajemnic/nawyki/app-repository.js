@@ -1,9 +1,17 @@
 class AppRepository{
 
-    constructor(storage){
-        this.nawykName = '';
-        this.nawykRepo = [];
-        this.storage = storage;
+    constructor(){
+        
+        if(AppRepository.instance == null){
+            this.storage = new AppStorage();
+            this.nawykName = this.storage.get('NAWYK_NAME') || '';
+            this.nawykRepo = this.storage.get('NAWYKREPO') || [];
+        }
+        
+        AppRepository.instance = this;
+        return AppRepository.instance;
+
+        // this.storage = storage;
     }
 
     addName(name){
@@ -20,9 +28,24 @@ class AppRepository{
         this.storage.set('NAWYK_NAME', '');
     }
 
+    readNawyksNumbersOfGivenDate(dateString){
+
+    }
+
+
+
+
+
+
+
+
+
+
     addNawykInfo(nawyk){
+        // debugger;
         this.nawykRepo.push(nawyk);
         this.storage.set('NAWYKREPO', this.nawykRepo)
+        console.log(this.nawykRepo);
     }
 
     removeNawykInfo(id){
@@ -36,3 +59,7 @@ class AppRepository{
 
 
 }
+
+const repository = new AppRepository();
+Object.freeze(repository);
+export default repository;

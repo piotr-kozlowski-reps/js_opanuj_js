@@ -1,5 +1,13 @@
 class DayBrick extends HTMLElement{
 
+  repository = new AppRepository();
+  nawykStates = {
+    ON: 'ON',
+    OFF: 'OFF',
+    EMPTY: 'EMPTY'
+  }
+
+
   static get observedAttributes(){
     return ['year', 'month', 'day', 'dayOfWeek'];
   }
@@ -8,15 +16,7 @@ class DayBrick extends HTMLElement{
     super();
   }
 
-
   connectedCallback(){
-
-    debugger;
-    const storage = new AppStorage();
-    const repository = new AppRepository();
-    const mapper = new AppMapper();
-
-
 
     let year = this.attributes[0].value;
     let month = this.attributes[1].value;
@@ -42,26 +42,24 @@ class DayBrick extends HTMLElement{
 
   }
 
+
   onChange(event){
 
-    const nawykStates = {
-      ON: 'ON',
-      OFF: 'OFF'
-    }
       console.log(event);
   
       const id = event.target.id;
-      const nawykState = ''
+      const nawykState = '' // TODO: wyciągnięcie z REPO nawykStatu
       console.log(id);
-      console.log(nawykStates.ON);
+      console.log(this.nawykStates.ON);
 
-      
       const nawyk = {
         id: id,
-        nawykState: nawykStates.ON
+        nawykState: this.nawykStates.ON
       }
+
+      console.log(nawyk);
   
-      repository.addNawykInfo(nawyk);
+      this.repository.addNawykInfo(nawyk);
   }
 
   attributeChangedCallback(attributes, oldValue, newValue){

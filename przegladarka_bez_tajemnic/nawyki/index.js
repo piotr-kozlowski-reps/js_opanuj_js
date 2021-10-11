@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   //objects
-  const storage = new AppStorage();
-  const repository = new AppRepository(storage);
+  // const repository = new AppRepository();
+  console.log(repository);
 
 
   //selectors
