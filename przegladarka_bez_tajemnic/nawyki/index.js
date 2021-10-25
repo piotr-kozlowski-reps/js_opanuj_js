@@ -59,6 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('OK');
     modalOff('modal1');
     repository.clearName();
+    repository.clearNawyki();
     formSectionSelector.classList.remove('hidden');
     calendarSelector.style.display = 'none';
   })
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  //TODO: dopytać o to jak wywołać taką funkcję z innego pliku w sensowny sposób
+  //TODO: dopytać o to jak wywołać taką funkcję z innego pliku w sensowny sposób i co zrobić by przy przeładowaniu nie resetował suwaków
   function refresh(){
 
     let dateForFirstColumn = new Date(startingDate);
@@ -185,6 +186,17 @@ document.addEventListener('DOMContentLoaded', () => {
       dayBrick.setAttribute('dayOfWeek', dayOfWeek[currentDay]);
       allDaysContainer.appendChild(dayBrick);
     }
+
+
+    const numberOfDaysON = repository.getNumberOfDaysONorOFFInGivenMonth(year, month, true);
+    const numberOfDaysOFF = repository.getNumberOfDaysONorOFFInGivenMonth(year, month, false);
+
+    const monthResumeBrick = document.createElement('month-resume-brick');
+    monthResumeBrick.setAttribute('numberOfDaysInGivenMonth', numberOfDaysInGivenMonth);
+    monthResumeBrick.setAttribute('numberOfDaysON', numberOfDaysON);
+    monthResumeBrick.setAttribute('numberOfDaysOFF', numberOfDaysOFF);
+    allDaysContainer.appendChild(monthResumeBrick);
+
   }
 
   function _elem(el) {

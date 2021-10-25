@@ -104,13 +104,24 @@ class AppRepository{
         return nawyk == null || nawyk == undefined ? undefined : nawyk;
     }
 
-    // removeNawykInfo(id){
-    //     this.nawykRepo = this.nawykRepo.filter(nawyk => nawyk.id !== id);
-    // }
-
     updateNawykInfo(id, nawykState){
         const nawyk = this.nawykRepo.find(n => n.id === id);
-        
+    }
+
+    getNumberOfDaysONorOFFInGivenMonth(year, month, onOrOff){
+
+        let count = 0;
+        const idPart = `${year}-${month}`;
+        this.nawykRepo.forEach(nawyk => {
+            if(nawyk.id.startsWith(idPart) && nawyk.nawykState === onOrOff) count++;
+        });
+
+        return count;
+    }
+
+    clearNawyki(){
+        this.storage.set('NAWYKREPO', []);
+        this.nawykRepo = [];
     }
 
 

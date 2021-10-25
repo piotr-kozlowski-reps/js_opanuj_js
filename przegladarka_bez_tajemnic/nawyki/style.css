@@ -204,10 +204,42 @@ button:hover{
     margin-right: 6px;
 }
 
+.day-every-resume{
+    padding: 0.5rem;
+    background: #ddd;
+    color: #333;
+    /* height: 45px; */
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-start;
+    align-items: flex-start;
+    margin-right: 6px;
+    border-top: 2px solid #333;
+}
+
 .day-every .day-name{
     padding-left: .25rem;
     font-size: .9rem;
-    color: #666;
+    color: rgb(26, 26, 26);
+}
+
+.nawyki-resume{
+    padding-left: .5rem;
+    font-size: .8rem;
+    color: #333;
+}
+
+.nawyki-resume-green{
+    padding-left: .5rem;
+    font-weight: 600;
+    color: rgb(37, 206, 22);
+}
+
+.nawyki-resume-red{
+    padding-left: .5rem;
+    font-weight: 600;
+    color: rgb(207, 17, 17);
 }
 
 .day-every .day-nawyki-neutral{
