@@ -18,11 +18,7 @@
   <div class="flex items-center justify-center">
     <div class="m-10 mx-auto p-16 sm:p-24 lg:p-48 bg-gray-200">
 
-      <transition 
-      v-on:before-enter="beforeEnter"
-      v-on:enter="enter"
-      v-on:leave="leave"
-      :css="false">
+      <transition name="fade">
         <app-carrousel :carouselitem="chosenCarouselItem" @prevbutton="prevButton" @nextbutton="nextButton"></app-carrousel>
       </transition>
       
