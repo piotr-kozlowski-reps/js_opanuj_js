@@ -113,7 +113,7 @@ Vue.component('app-users-list', {
             if(this.searchedphrase == '') return filteredMembers;
             else filteredMembers = this.members.filter(member => {
                 const textToSearch = `${member.first_name.toLowerCase()} ${member.last_name.toLowerCase()}`;
-                if(textToSearch.toLowerCase().includes(this.searchedphrase)) return member;
+                if(textToSearch.toLowerCase().includes(this.searchedphrase.toLowerCase())) return member;
             });
 
             return filteredMembers;

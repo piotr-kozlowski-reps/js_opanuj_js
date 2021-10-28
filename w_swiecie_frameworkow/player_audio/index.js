@@ -9,6 +9,53 @@
 // 4. Całość przygotuj w formie componentu <Player> przyjmującego jako props tablicę 5 dowolnych utworów pobranych z API Deezera. 
 
 Vue.component('Player', {
+
+  data: function(){
+    return {
+
+      responseFromApi: null,
+      responseAvailable: false
+
+    }
+  },
+
+  methods: {
+
+    fetchDataFromApi(){
+
+      //https://api.deezer.com/artist/195137/top?limit=50
+      //https://deezerdevs-deezer.p.rapidapi.com/artist/Miles
+
+      fetch("https://api.deezer.com/album/165787232", {
+        "method": "GET",
+        "headers": {
+          "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+          "x-rapidapi-key": "82a37221acmsh107b8ba357fb692p119788jsn6d30282382be"
+        }
+      })
+      .then(response => {
+          if(response.ok) return response.json()
+          else alert(`serwer zwrócił ${response.status} : ${response.statusText}`)
+        }
+      )
+      .then(response => {
+        this.responseFromApi = response.body;
+        this.responseAvailable = true
+        console.log(this.responseFromApi)
+      })
+      .catch(err => {
+        console.log(err)
+      });
+
+    }
+
+  },
+
+
+  created(){
+    this.fetchDataFromApi();
+  },
+
   template: `
   <div class="w-full">
   <div class="h-2 bg-red-light"></div>

@@ -36,6 +36,10 @@ Vue.component('app-carrousel', {
     }
   },
 
+  methods: {
+
+  },
+
   template: `
   <div class="relative rounded-lg block md:flex items-center bg-gray-100 shadow-xl" style="min-height: 19rem;">
   <div class="relative w-full md:w-2/5 h-full overflow-hidden rounded-t-lg md:rounded-t-none md:rounded-l-lg"
@@ -47,14 +51,13 @@ Vue.component('app-carrousel', {
 
     <img class="w-full h-24" :src="carouselitem.logoSrc" />
 
-    </div>
+  </div>
   </div>
   <div class="w-full md:w-3/5 h-full flex items-center bg-gray-100 rounded-lg">
     <div class="p-12 md:pr-24 md:pl-16 md:py-12">
-      <p class="text-gray-600">
-        {{carouselitem.innerText}}</p>
+      <p class="text-gray-600" v-html="carouselitem.innerText"></p>
       <a class="flex items-baseline mt-3 text-indigo-600 hover:text-indigo-900 focus:text-indigo-900"
-        href="">
+        :href="carouselitem.moreLink">
         <span>Learn more about our users</span>
         <span class="text-xs ml-1">&#x279c;</span>
       </a>
@@ -64,19 +67,23 @@ Vue.component('app-carrousel', {
       <polygon points="50,0 100,0 50,100 0,100" />
     </svg>
   </div>
-  <button class="absolute top-0 mt-32 left-0 bg-white rounded-full shadow-md h-12 w-12 text-2xl text-indigo-600 hover:text-indigo-400 focus:text-indigo-400 -ml-6 focus:outline-none focus:shadow-outline">
+  <button @click="$emit('prevbutton')" class="absolute top-0 mt-32 left-0 bg-white rounded-full shadow-md h-12 w-12 text-2xl text-indigo-600 hover:text-indigo-400 focus:text-indigo-400 -ml-6 focus:outline-none focus:shadow-outline">
     <span class="block" style="transform: scale(-1);">&#x279c;</span>
   </button>
-  <button class="absolute top-0 mt-32 right-0 bg-white rounded-full shadow-md h-12 w-12 text-2xl text-indigo-600 hover:text-indigo-400 focus:text-indigo-400 -mr-6 focus:outline-none focus:shadow-outline">
+  <button @click="$emit('nextbutton')" class="absolute top-0 mt-32 right-0 bg-white rounded-full shadow-md h-12 w-12 text-2xl text-indigo-600 hover:text-indigo-400 focus:text-indigo-400 -mr-6 focus:outline-none focus:shadow-outline">
     <span class="block" style="transform: scale(1);">&#x279c;</span>
   </button>
 </div>
   `
 })
 
-
 const items = [
-  {logoSrc: './img/slack-technologies-seeklogo.com.svg', innerText: 'As <span class="text-gray-900">Slack</span> grows rapidly, using Stripe helps them scale payments easily—supporting everything from getting paid by users round the world to enabling ACH payments for corporate customers.', moreLink: 'https://www.google.com/search?q=slack'}
+  {logoSrc: './img/kickstarter-seeklogo.com.svg', innerText: 'As <span class="text-gray-900">Kickstarter</span> grows rapidly, using Stripe helps them scale payments easily—supporting everything from getting paid by users round the world to enabling ACH payments for corporate customers.', moreLink: 'https://www.google.com/search?q=kickstarter'},
+  {logoSrc: './img/slack-technologies-seeklogo.com.svg', innerText: 'As <span class="text-gray-900">Slack</span> grows rapidly, using Stripe helps them scale payments easily—supporting everything from getting paid by users round the world to enabling ACH payments for corporate customers.', moreLink: 'https://www.google.com/search?q=slack'},
+  {logoSrc: './img/glossier-seeklogo.com.svg', innerText: 'As <span class="text-gray-900">Glossier</span> grows rapidly, using Stripe helps them scale payments easily—supporting everything from getting paid by users round the world to enabling ACH payments for corporate customers.', moreLink: 'https://www.google.com/search?q=glossier'},
+  {logoSrc: './img/240615.svg', innerText: 'As <span class="text-gray-900">Coś1</span> grows rapidly, using Stripe helps them scale payments easily—supporting everything from getting paid by users round the world to enabling ACH payments for corporate customers.', moreLink: 'https://www.google.com/search?q=coś1'},
+  {logoSrc: './img/device-camera-svgrepo-com.svg', innerText: 'As <span class="text-gray-900">Camera</span> grows rapidly, using Stripe helps them scale payments easily—supporting everything from getting paid by users round the world to enabling ACH payments for corporate customers.', moreLink: 'https://www.google.com/search?q=camera'},
+  
 ]
 
 new Vue({
@@ -93,7 +100,47 @@ new Vue({
   methods: {
     getCurrentItem(){
       return this.carousellItems[this.itemIndex]
+    },
+
+    prevButton(){
+      const maxItemsAmount = this.carousellItems.length - 1;
+      if (this.itemIndex == 0) this.itemIndex = maxItemsAmount;
+      else this.itemIndex--;
+      this.chosenCarouselItem = this.getCurrentItem();
+    },
+
+    nextButton(){
+      // debugger;
+      const maxItemsAmount = this.carousellItems.length - 1;
+      if (this.itemIndex == maxItemsAmount) this.itemIndex = 0;
+      else this.itemIndex++;
+      this.chosenCarouselItem = this.getCurrentItem();
+    },
+
+    isCurrentActive(index){
+      return this.itemIndex == index;
+    },
+
+    goToCarouselItem(number){
+      this.itemIndex = number;
+      this.chosenCarouselItem = this.getCurrentItem();
+    },
+
+    //TODO: transition nie działa za bardzo
+    beforeEnter(){
+      el.style.opacity = 0;
+    },
+
+    enter(){
+      Velocity(el, {opacity: 1}, {duration: 3000})
+    },
+
+    leave(){
+      Velocity(el, {opacity: 0}, {complete: done})
     }
+
+
+
   },
 
   created(){
