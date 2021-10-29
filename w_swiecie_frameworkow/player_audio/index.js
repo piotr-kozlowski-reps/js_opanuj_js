@@ -13,9 +13,18 @@ Vue.component('Player', {
   data: function(){
     return {
 
+      // trackIDs: ['1496680792', '109734566', '1519501922', '1520216322', '1519733042'],
       responseFromApi: null,
-      responseAvailable: false
+      playerDataAvailable: false,
+      fetchedTracks: [],
 
+      currentSong: null,
+      currentSongDurationSeconds: 0,
+      currentSongProgressSeconds: 40,
+      currentSongProgressBarWidth: 0,
+      
+      currentSongDurationAsString: '00:00',
+      currentSongProgressTimeAsString: '00:00'
     }
   },
 
@@ -23,10 +32,7 @@ Vue.component('Player', {
 
     fetchDataFromApi(){
 
-      //https://api.deezer.com/artist/195137/top?limit=50
-      //https://deezerdevs-deezer.p.rapidapi.com/artist/Miles
-
-      fetch("https://api.deezer.com/album/165787232", {
+      fetch(`https://deezerdevs-deezer.p.rapidapi.com/album/161541842`, {
         "method": "GET",
         "headers": {
           "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
@@ -39,15 +45,59 @@ Vue.component('Player', {
         }
       )
       .then(response => {
-        this.responseFromApi = response.body;
-        this.responseAvailable = true
-        console.log(this.responseFromApi)
+        if(!response.error) {
+          this.responseFromApi = response;
+          this.catchTracks();
+
+        } 
+        else this.fetchDataFromApi();
+          
       })
       .catch(err => {
         console.log(err)
       });
 
+    },
+
+    catchTracks(){
+      this.responseFromApi.tracks.data.forEach(track => this.fetchedTracks.push(track));
+      this.startPlayer()
+    },
+
+    startPlayer(){
+      this.currentSong = this.fetchedTracks[0];
+      this.playerDataAvailable = true;
+      this.updatePlayer();
+    },
+
+    updatePlayer(){
+      this.computeDurations();
+      this.refreshProgressBar();
+    },
+
+    refreshProgressBar(){
+      if(!this.playerDataAvailable){
+        setTimeout(refreshProgressBar(), 300);
+        return;
+      }
+      this.currentSongProgressBarWidth = Math.floor((this.currentSongProgressSeconds / this.currentSongDurationSeconds) * 100);
+    },
+
+    computeDurations(){
+      if (!this.playerDataAvailable) {
+        setTimeout(computeDuration(), 300);
+        return;
+      } else {
+          const durationInSeconds = this.currentSong.duration;
+          const minutes = Math.floor(durationInSeconds / 60);
+          const seconds = durationInSeconds % 60;
+          const minutesAsString = minutes < 10 ? `0${minutes}` : minutes;
+          const secondsAsString = seconds < 10 ? `0${seconds}` : seconds;
+          this.currentSongDurationAsString =  `${minutesAsString}:${secondsAsString}`;
+          this.currentSongDurationSeconds = durationInSeconds;
+      }
     }
+
 
   },
 
@@ -65,8 +115,8 @@ Vue.component('Player', {
           <div class="w-full p-8">
             <div class="flex justify-between">
               <div>
-                <h3 class="text-2xl text-grey-darkest font-medium">One & One (feat. Maria Nayler)</h3>
-                <p class="text-sm text-grey mt-1">Robert Miles</p>
+                <h3 class="text-2xl text-grey-darkest font-medium">{{ playerDataAvailable ? currentSong.artist.name : '...'}}</h3>
+                <p class="text-sm text-grey mt-1" >{{ playerDataAvailable ? currentSong.title : '...'}}</p>
               </div>
             </div>
             <div class="flex justify-evenly items-center mt-8">
@@ -84,12 +134,12 @@ Vue.component('Player', {
         </div>
         <div class="mx-8 py-4">
           <div class="flex justify-between text-sm text-grey-darker">
-            <p>0:40</p>
-            <p>4:20</p>
+            <p>{{currentSongProgressTimeAsString}}</p>
+            <p>{{currentSongDurationAsString}}</p>
           </div>
           <div class="mt-1">
             <div class="h-1 bg-grey-dark rounded-full">
-              <div class="w-1/5 h-1 bg-red-light rounded-full relative bg-red-500">
+              <div class="h-1 bg-red-light rounded-full relative bg-red-500" :class="">
                 <span class="w-4 h-4 bg-red absolute pin-r pin-b -mb-1 rounded-full shadow"></span>
               </div>
             </div>
