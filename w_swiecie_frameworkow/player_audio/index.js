@@ -16,11 +16,13 @@ Vue.component('Player', {
       // trackIDs: ['1496680792', '109734566', '1519501922', '1520216322', '1519733042'],
       responseFromApi: null,
       playerDataAvailable: false,
+      trackAvailable: false,
       fetchedTracks: [],
 
-      currentSong: null,
+      currentSongData: null,
+      currentTrack: null,
       currentSongDurationSeconds: 0,
-      currentSongProgressSeconds: 40,
+      currentSongProgressSeconds: 0,
       currentSongProgressBarWidth: 0,
       
       currentSongDurationAsString: '00:00',
@@ -59,19 +61,45 @@ Vue.component('Player', {
 
     },
 
+    fetchAudioTrack(){
+
+      const track = new Audio(this.currentSongData.link);
+      // console.log(track)
+
+      // fetch(this.currentSongData.link, {
+      //   "method": "GET",
+      //   "headers": {
+      //     "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      //     "x-rapidapi-key": "82a37221acmsh107b8ba357fb692p119788jsn6d30282382be"
+      //   }
+      // })
+      // .then(response => {
+      //   console.log(response);
+      // })
+
+    },
+
+
     catchTracks(){
       this.responseFromApi.tracks.data.forEach(track => this.fetchedTracks.push(track));
       this.startPlayer()
     },
 
     startPlayer(){
-      this.currentSong = this.fetchedTracks[0];
+      this.currentSongData = this.fetchedTracks[0];
       this.playerDataAvailable = true;
-      this.updatePlayer();
+      this.currentTrack = this.fetchAudioTrack();  
+      setInterval(this.updatePlayer, 1000);
     },
 
     updatePlayer(){
+
+      if(!this.trackAvailable){
+
+      }
+
       this.computeDurations();
+      this.computeProgressDuration()
       this.refreshProgressBar();
     },
 
@@ -88,7 +116,7 @@ Vue.component('Player', {
         setTimeout(computeDuration(), 300);
         return;
       } else {
-          const durationInSeconds = this.currentSong.duration;
+          const durationInSeconds = this.currentSongData.duration;
           const minutes = Math.floor(durationInSeconds / 60);
           const seconds = durationInSeconds % 60;
           const minutesAsString = minutes < 10 ? `0${minutes}` : minutes;
@@ -96,6 +124,10 @@ Vue.component('Player', {
           this.currentSongDurationAsString =  `${minutesAsString}:${secondsAsString}`;
           this.currentSongDurationSeconds = durationInSeconds;
       }
+    },
+
+    computeProgressDuration(){
+      this.currentSongProgressSeconds = 40; //TODO: oblicz sekunde w jakiej znajduje sie utwor
     }
 
 
@@ -115,8 +147,8 @@ Vue.component('Player', {
           <div class="w-full p-8">
             <div class="flex justify-between">
               <div>
-                <h3 class="text-2xl text-grey-darkest font-medium">{{ playerDataAvailable ? currentSong.artist.name : '...'}}</h3>
-                <p class="text-sm text-grey mt-1" >{{ playerDataAvailable ? currentSong.title : '...'}}</p>
+                <h3 class="text-2xl text-grey-darkest font-medium">{{ playerDataAvailable ? currentSongData.artist.name : '...'}}</h3>
+                <p class="text-sm text-grey mt-1" >{{ trackAvailable ? currentSongData.title : '(... loading)'}}</p>
               </div>
             </div>
             <div class="flex justify-evenly items-center mt-8">
@@ -139,7 +171,7 @@ Vue.component('Player', {
           </div>
           <div class="mt-1">
             <div class="h-1 bg-grey-dark rounded-full">
-              <div class="h-1 bg-red-light rounded-full relative bg-red-500" :class="">
+              <div class="w-4 h-1 bg-red-light rounded-full relative bg-red-500" :style="{width: currentSongProgressBarWidth+'%'}">
                 <span class="w-4 h-4 bg-red absolute pin-r pin-b -mb-1 rounded-full shadow"></span>
               </div>
             </div>
